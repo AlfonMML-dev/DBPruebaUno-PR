@@ -5,10 +5,26 @@
  */
 package dbuno;
 
+import java.sql.ResultSet;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Usuario
  */
-public class Panel {
+public class Panel extends JPanel{
+ 
+    static private ResultSet rs;
+
+    public Panel() {
+        
+    }
+    
+    public void ponerComponentes(){
+        
+    }
+    
+    
+    
     
 }

@@ -5,12 +5,25 @@
  */
 package dbuno;
 
+import java.awt.FlowLayout;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Usuario
  */
-public class Ventana {
+public class Ventana extends JFrame{
     Panel panel;
-    
-    
+
+    public Ventana() {
+        this.setTitle("Listado empleados");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setBounds(100, 100, 500, 500);
+        this.setLayout(new FlowLayout());
+        panel = new Panel();
+        this.getContentPane().add(panel);
+        this.addWindowListener(new FuncionalidadVentana(panel));
+        this.setVisible(true);
+    }
+
 }
