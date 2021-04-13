@@ -5,7 +5,6 @@
  */
 package dbuno;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
@@ -17,21 +16,18 @@ public class DBUno {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, IOSQLException {
         // TODO code application logic here
-        try {
-            Connection conn = IOSQL.abrirConexionBD("jdbc:mysql://localhost/DEPEMP", 
-                    "pepe", "pepa");
-            String query = "SELECT * FROM empleados";
-            ResultSet  rs = IOSQL.getResultSet(conn, query);
-            int numFilas = IOSQL.getNumFilas(rs);
-            String resultado = IOSQL.printRs(rs);
-            System.out.println(resultado);
-            System.out.println(numFilas);
-            IOSQL.cerrarConexionBD(conn);
-        } catch (IOSQLException e) {
-            System.out.println(e.getMessage());
-        }
+
+        IOSQL.abrirConexionBD("jdbc:mysql://localhost/DEPEMP",
+                "pepe", "pepa");
+        String query = "SELECT * FROM empleados";
+        ResultSet rs = IOSQL.getResultSet(query);
+        int numFilas = IOSQL.getNumFilas(rs);
+        String resultado = IOSQL.printRs(rs);
+        System.out.println(resultado);
+        System.out.println(numFilas);
+        IOSQL.cerrarConexionBD();
+
     }
-    
 }

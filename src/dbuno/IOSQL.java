@@ -16,23 +16,28 @@ import java.sql.Statement;
  *
  * @author Usuario
  */
-public class IOSQL {    
+public class IOSQL {
+         
+    static private Connection conn = null;
+    static private Statement stmt;
 
-    public static Connection abrirConexionBD(String url, String user, String pass) throws IOSQLException{
-        Connection conn = null;
+    public static void abrirConexionBD(String url, String user, String pass) 
+            throws IOSQLException, IOException {        
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, pass);
+            stmt = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         } catch (SQLException e) {
-            throw new IOSQLException("Error al abrir la conexión");
-        }
-        return conn;
+            throw new IOSQLException("Error al conectarse a la base de datos");
+        } catch (ClassNotFoundException e){
+            throw new IOException(e.getMessage());
+        }        
     }
 
-    public static ResultSet getResultSet(Connection conn, String query) throws IOSQLException {
+    public static ResultSet getResultSet(String query) throws IOSQLException {
         ResultSet rs = null;
-        try {
-            Statement stmt = conn.createStatement(
-                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        try {            
             rs = stmt.executeQuery(query);
         } catch (SQLException e) {
             throw new IOSQLException("Error al obtener el ResultSet");
@@ -85,21 +90,21 @@ public class IOSQL {
                 }
                 for (int i = 0; i < nCol; i++) {
                     salida += valColumnas[i].toString();
-                    salida += "\t\t";                                       
+                    salida += "\t\t";
                 }
                 salida += "\n";
             }
         } catch (SQLException ex) {
             throw new IOSQLException("Error al recorrer el ResultSet");
-        }        
+        }
         return salida;
     }//end printRs()
-    
-    public static int getNumFilas(ResultSet rs) throws IOSQLException{
+
+    public static int getNumFilas(ResultSet rs) throws IOSQLException {
         int contador = 0;
         try {
             rs.beforeFirst();
-            while(rs.next()){
+            while (rs.next()) {
                 contador++;
             }
         } catch (SQLException e) {
@@ -107,19 +112,26 @@ public class IOSQL {
         }
         return contador;
     }
-        
-    public static void cerrarConexionBD(Connection conn) throws IOSQLException {
+
+    public static void cerrarConexionBD() throws IOSQLException {
         try {
+            stmt.close();
             conn.close();
         } catch (SQLException ex) {
             throw new IOSQLException("Error al cerrar la conexión" + ex.getMessage());
         }
-    }      
+    }
 }
 
-class IOSQLException extends Exception {
+class IOSQLException extends SQLException {
 
     public IOSQLException(String msg) {
+        super(msg);
+    }
+}
+
+class IOException extends Exception {
+    public IOException(String msg){
         super(msg);
     }
 }
