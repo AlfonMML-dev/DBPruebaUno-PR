@@ -15,12 +15,10 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class FuncionalidadVentana implements WindowListener {
+public class FuncionalidadVentana implements WindowListener {    
 
-    private Panel panel;
-
-    public FuncionalidadVentana(Panel panel) {
-        this.panel = panel;
+    public FuncionalidadVentana() {
+        
     }
 
     @Override
@@ -30,8 +28,7 @@ public class FuncionalidadVentana implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        try {
-            //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {           
             IOSQL.cerrarConexionBD();
         } catch (IOSQLException ex) {
             Logger.getLogger(FuncionalidadVentana.class.getName()).log(Level.SEVERE, null, ex);

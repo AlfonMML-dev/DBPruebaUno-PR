@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -82,19 +84,37 @@ public class Panel extends JPanel{
         btBorrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                borrarEmpleado();
+                try {
+                    borrarEmpleado(e);
+                } catch (IOSQLException ex) {
+                    Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         btActualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                actualizarEmpleado();
+                try {
+                    actualizarEmpleado(e);
+                } catch (IOSQLException ex) {
+                    Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         btInsertar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                insertarEmpleado();
+                try {
+                    insertarEmpleado(e);
+                } catch (IOSQLException ex) {
+                    Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
@@ -116,15 +136,19 @@ public class Panel extends JPanel{
         
     }
     
-    public void borrarEmpleado(){
+    public void borrarEmpleado(ActionEvent e) 
+            throws IOSQLException, IOException {
+        IOSQL.abrirConexionBD("pepe", "pepa");
         
     }
     
-    public void actualizarEmpleado(){
+    public void actualizarEmpleado(ActionEvent e)
+            throws IOSQLException, IOException {
         
     }
     
-    public void insertarEmpleado(){
+    public void insertarEmpleado(ActionEvent e) 
+            throws IOSQLException, IOException {
         
     }
     

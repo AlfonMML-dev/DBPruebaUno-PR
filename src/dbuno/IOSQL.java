@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,20 +19,22 @@ import java.sql.Statement;
  */
 public class IOSQL {
          
+    static final String DB_URL = "jdbc:mysql://localhost/DEPEMP";
     static private Connection conn = null;
     static private Statement stmt;
 
-    public static void abrirConexionBD(String url, String user, String pass) 
+    public static void abrirConexionBD(String user, String pass) 
             throws IOSQLException, IOException {        
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(url, user, pass);
-            stmt = conn.createStatement(
-                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            conn = DriverManager.getConnection(DB_URL, user, pass);
+            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE);
         } catch (SQLException e) {
             throw new IOSQLException("Error al conectarse a la base de datos");
         } catch (ClassNotFoundException e){
-            throw new IOException(e.getMessage());
+            throw new IOException("NO se ha encontrado el driver " 
+                    + e.getMessage());
         }        
     }
 
@@ -45,7 +48,8 @@ public class IOSQL {
         return rs;
     }
 
-    public static ResultSetMetaData getResultSetMetadData(ResultSet rs) throws IOSQLException {
+    public static ResultSetMetaData getResultSetMetadData(ResultSet rs) 
+            throws IOSQLException {
         ResultSetMetaData rm = null;
         try {
             rm = rs.getMetaData();
@@ -112,13 +116,30 @@ public class IOSQL {
         }
         return contador;
     }
+    
+    public static int getNumFilasAfectadas(String sql) throws IOSQLException{
+        //Número de filas afectadas
+        int fA = 0; 
+        try {
+            fA = stmt.executeUpdate(sql);
+        } catch (SQLException e) {            
+            String error = "";
+            if(e.getErrorCode() == 1062){
+                error += "Ya existe un empleado con ese ID";
+            }
+            throw new IOSQLException("Error al obtener el número de filas afectadas. "
+            + error);
+        }
+        return fA;
+    }
 
     public static void cerrarConexionBD() throws IOSQLException {
         try {
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
-            throw new IOSQLException("Error al cerrar la conexión" + ex.getMessage());
+            throw new IOSQLException("Error al cerrar la conexión" 
+                    + ex.getMessage());
         }
     }
 }
@@ -127,11 +148,15 @@ class IOSQLException extends SQLException {
 
     public IOSQLException(String msg) {
         super(msg);
+        JOptionPane.showMessageDialog(null, msg, "DATABASE ERROR", 
+                JOptionPane.WARNING_MESSAGE);
     }
 }
 
 class IOException extends Exception {
     public IOException(String msg){
         super(msg);
+        JOptionPane.showMessageDialog(null, msg, "DATABASE ERROR", 
+                JOptionPane.WARNING_MESSAGE);
     }
 }

@@ -19,8 +19,7 @@ public class DBUno {
     public static void main(String[] args) throws IOException, IOSQLException {
         // TODO code application logic here
 
-        IOSQL.abrirConexionBD("jdbc:mysql://localhost/DEPEMP",
-                "pepe", "pepa");
+        IOSQL.abrirConexionBD("pepe", "pepa");
         String query = "SELECT * FROM empleados";
         ResultSet rs = IOSQL.getResultSet(query);
         int numFilas = IOSQL.getNumFilas(rs);

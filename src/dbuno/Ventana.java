@@ -22,7 +22,7 @@ public class Ventana extends JFrame{
         this.setLayout(new FlowLayout());
         panel = new Panel();
         this.getContentPane().add(panel);
-        this.addWindowListener(new FuncionalidadVentana(panel));
+        this.addWindowListener(new FuncionalidadVentana());
         this.setVisible(true);
     }
 
