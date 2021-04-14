@@ -20,13 +20,12 @@ public class DBUno {
         // TODO code application logic here
 
         IOSQL.abrirConexionBD("pepe", "pepa");
-        String query = "SELECT * FROM empleados";
+        String query = "SELECT * FROM empleado";
         ResultSet rs = IOSQL.getResultSet(query);
         int numFilas = IOSQL.getNumFilas(rs);
         String resultado = IOSQL.printRs(rs);
         System.out.println(resultado);
         System.out.println(numFilas);
         IOSQL.cerrarConexionBD();
-
     }
 }

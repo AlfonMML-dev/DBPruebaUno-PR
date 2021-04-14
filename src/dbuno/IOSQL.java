@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  */
 public class IOSQL {
          
-    static final String DB_URL = "jdbc:mysql://localhost/DEPEMP";
+    static final String DB_URL = "jdbc:mysql://localhost/pruebauno";
     static private Connection conn = null;
     static private Statement stmt;
 
