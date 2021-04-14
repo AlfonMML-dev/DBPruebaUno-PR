@@ -152,7 +152,7 @@ public class Panel extends JPanel {
         filas = IOSQL.getNumFilasAfectadas(sql);
         if(filas > 0){
             JOptionPane.showMessageDialog(null, "Se ha borrado un empleado " 
-                    + filas + " filas afectadas", "Database Mensaje", 
+                    + filas + " filas afectadas", "Mensaje Base de Datos", 
                     JOptionPane.INFORMATION_MESSAGE);
         }
         IOSQL.cerrarConexionBD();
@@ -172,7 +172,7 @@ public class Panel extends JPanel {
         int filas = IOSQL.getNumFilasAfectadas(sql);
         if(filas > 0){
             JOptionPane.showMessageDialog(null, "Se ha modificado un empleado " 
-                    + filas + " filas afectadas", "Database Mensaje", 
+                    + filas + " filas afectadas", "Mensaje Base de Datos", 
                     JOptionPane.INFORMATION_MESSAGE);
         }
         IOSQL.cerrarConexionBD();
@@ -192,7 +192,7 @@ public class Panel extends JPanel {
         int filas = IOSQL.getNumFilasAfectadas(sql);
         if(filas > 0){
             JOptionPane.showMessageDialog(null, "Se ha modificado un empleado " 
-                    + filas + " filas afectadas", "Database Mensaje", 
+                    + filas + " filas afectadas", "Mensaje Base de Datos", 
                     JOptionPane.INFORMATION_MESSAGE);
         }
         IOSQL.cerrarConexionBD();
