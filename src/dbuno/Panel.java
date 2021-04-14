@@ -88,7 +88,7 @@ public class Panel extends JPanel{
                     borrarEmpleado(e);
                 } catch (IOSQLException ex) {
                     Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
+                } catch (IOClassNotFoundException ex) {
                     Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -100,7 +100,7 @@ public class Panel extends JPanel{
                     actualizarEmpleado(e);
                 } catch (IOSQLException ex) {
                     Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
+                } catch (IOClassNotFoundException ex) {
                     Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -112,7 +112,7 @@ public class Panel extends JPanel{
                     insertarEmpleado(e);
                 } catch (IOSQLException ex) {
                     Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
+                } catch (IOClassNotFoundException ex) {
                     Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -137,18 +137,30 @@ public class Panel extends JPanel{
     }
     
     public void borrarEmpleado(ActionEvent e) 
-            throws IOSQLException, IOException {
-        IOSQL.abrirConexionBD("pepe", "pepa");
+            {
+        int filas, id;        
+        String sql;
+        try {
+            IOSQL.abrirConexionBD("pepe", "pepa");            
+            //Obtengo el ID del empleado que voy a borrar
+            id = Integer.parseInt(tfID.getText());
+            sql = "DELETE FROM empleado WHERE idEmp = " + id;
+            filas = IOSQL.getNumFilasAfectadas(sql);
+        } catch (IOSQLException ex) {
+            Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOClassNotFoundException ex) {
+            Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
     public void actualizarEmpleado(ActionEvent e)
-            throws IOSQLException, IOException {
+            throws IOSQLException, IOClassNotFoundException {
         
     }
     
     public void insertarEmpleado(ActionEvent e) 
-            throws IOSQLException, IOException {
+            throws IOSQLException, IOClassNotFoundException {
         
     }
     

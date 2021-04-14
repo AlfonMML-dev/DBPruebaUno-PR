@@ -16,7 +16,7 @@ public class DBUno {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, IOSQLException {
+    public static void main(String[] args) throws IOClassNotFoundException, IOSQLException {
         // TODO code application logic here
 
         IOSQL.abrirConexionBD("pepe", "pepa");

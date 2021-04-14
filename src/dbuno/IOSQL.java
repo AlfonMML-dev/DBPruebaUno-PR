@@ -26,7 +26,7 @@ public class IOSQL {
     static private Statement stmt;
 
     public static void abrirConexionBD(String user, String pass) 
-            throws IOSQLException, IOException {        
+            throws IOSQLException, IOClassNotFoundException {        
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL, user, pass);
@@ -35,7 +35,7 @@ public class IOSQL {
         } catch (SQLException e) {
             throw new IOSQLException("Error al conectarse a la base de datos");
         } catch (ClassNotFoundException e){
-            throw new IOException("NO se ha encontrado el driver " 
+            throw new IOClassNotFoundException("NO se ha encontrado el driver " 
                     + e.getMessage());
         }        
     }
@@ -189,8 +189,8 @@ class IOSQLException extends SQLException {
     }
 }
 
-class IOException extends Exception {
-    public IOException(String msg){
+class IOClassNotFoundException extends ClassNotFoundException {
+    public IOClassNotFoundException(String msg){
         super(msg);
         JOptionPane.showMessageDialog(null, msg, "DATABASE ERROR", 
                 JOptionPane.WARNING_MESSAGE);
