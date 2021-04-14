@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -68,7 +70,7 @@ public class IOSQL {
         try {
             nCol = meta.getColumnCount();
         } catch (SQLException ex) {
-            throw new IOSQLException("Error al obtener el número");
+            throw new IOSQLException("Error al obtener el número de columnas");
         }
         String[] nombreColumnas = new String[nCol];
         String[] tipoColumnas = new String[nCol];
@@ -131,6 +133,40 @@ public class IOSQL {
             + error);
         }
         return fA;
+    }
+    
+    public static int getNumColumnas(ResultSet rs) throws IOSQLException{
+        ResultSetMetaData rm ;
+        int numColums = 0;
+        try {
+            rm = rs.getMetaData();
+            numColums = rm.getColumnCount();            
+        } catch (SQLException ex) {
+            throw new IOSQLException("Error al obtener el número de columnas");
+        }
+        return numColums;
+    }
+    
+    //Método que devuelve el nombre de las columnas
+    public static String[] getNomColumnas(ResultSet rs) throws IOSQLException{
+        ResultSetMetaData rm ;
+        int numColums = 0;
+        String[] nombreColumnas;
+        try {
+            rm = rs.getMetaData();
+            numColums = rm.getColumnCount();            
+        } catch (SQLException ex) {
+            throw new IOSQLException("Error al obtener el número de columnas");
+        }
+        nombreColumnas = new String[numColums];
+        for (int i = 0; i < nombreColumnas.length; i++) {
+            try {
+                nombreColumnas[i] = rm.getColumnName(i+1);
+            } catch (SQLException ex) {
+                throw new IOSQLException("Error al obtner el nombre de las columnas");
+            }            
+        }
+        return nombreColumnas;
     }
 
     public static void cerrarConexionBD() throws IOSQLException {
