@@ -66,23 +66,10 @@ public class IOSQL {
         ResultSetMetaData meta;
         meta = IOSQL.getResultSetMetadData(rs);
 
-        int nCol;
-        try {
-            nCol = meta.getColumnCount();
-        } catch (SQLException ex) {
-            throw new IOSQLException("Error al obtener el número de columnas");
-        }
-        String[] nombreColumnas = new String[nCol];
-        String[] tipoColumnas = new String[nCol];
-        Object[] valColumnas = new Object[nCol];
-        for (int i = 0; i < nCol; i++) {
-            try {
-                nombreColumnas[i] = meta.getColumnName(i + 1);
-                tipoColumnas[i] = meta.getColumnTypeName(i + 1);
-            } catch (SQLException e) {
-                throw new IOSQLException("Error al rellenar la cabecera");
-            }
-        }
+        int nCol = getNumColumn(rs);
+        String[] nombreColumnas = getNomColumn(rs);
+        String[] tipoColumnas = getTypeColumn(rs);
+        Object[] valColumnas = new Object[nCol];        
         for (int i = 0; i < nCol; i++) {
             salida += nombreColumnas[i] + "[" + tipoColumnas[i] + "]\t";
         }
@@ -107,16 +94,13 @@ public class IOSQL {
     }//end printRs()
 
     public static int getNumFilas(ResultSet rs) throws IOSQLException {
-        int contador = 0;
+        int numFilas = 0;
         try {
-            rs.beforeFirst();
-            while (rs.next()) {
-                contador++;
-            }
+            numFilas = rs.getRow();
         } catch (SQLException e) {
             throw new IOSQLException("Error al obtener el número de filas");
         }
-        return contador;
+        return numFilas;
     }
     
     public static int getNumFilasAfectadas(String sql) throws IOSQLException{
@@ -135,7 +119,8 @@ public class IOSQL {
         return fA;
     }
     
-    public static int getNumColumnas(ResultSet rs) throws IOSQLException{
+    //Método que devuelve el número de columnas
+    public static int getNumColumn(ResultSet rs) throws IOSQLException{
         ResultSetMetaData rm ;
         int numColums = 0;
         try {
@@ -148,16 +133,10 @@ public class IOSQL {
     }
     
     //Método que devuelve el nombre de las columnas
-    public static String[] getNomColumnas(ResultSet rs) throws IOSQLException{
-        ResultSetMetaData rm ;
-        int numColums = 0;
-        String[] nombreColumnas;
-        try {
-            rm = rs.getMetaData();
-            numColums = rm.getColumnCount();            
-        } catch (SQLException ex) {
-            throw new IOSQLException("Error al obtener el número de columnas");
-        }
+    public static String[] getNomColumn(ResultSet rs) throws IOSQLException{
+        ResultSetMetaData rm = getResultSetMetadData(rs);
+        int numColums = getNumColumn(rs);
+        String[] nombreColumnas;        
         nombreColumnas = new String[numColums];
         for (int i = 0; i < nombreColumnas.length; i++) {
             try {
@@ -168,7 +147,46 @@ public class IOSQL {
         }
         return nombreColumnas;
     }
+    
+    //Método que devuelve el tipo de dato de cada columnas
+    public static String[] getTypeColumn(ResultSet rs) throws IOSQLException{
+        ResultSetMetaData rm = getResultSetMetadData(rs);
+        int numColums = getNumColumn(rs);
+        String[] tipoColumnas;        
+        tipoColumnas = new String[numColums];
+        for (int i = 0; i < tipoColumnas.length; i++) {
+            try {
+                tipoColumnas[i] = rm.getColumnTypeName(i+1);
+            } catch (SQLException ex) {
+                throw new IOSQLException("Error al obtner el tipo de dato "
+                        + "de las columnas");
+            }            
+        }
+        return tipoColumnas;
+    }
 
+    //Método que devuelve los datos de todas las filas
+    public static Object[][] getValFila(ResultSet rs) throws IOSQLException{        
+        int numFilas = getNumFilas(rs);
+        int numColums = getNumColumn(rs);
+        Object[][] valColumnas = new Object[numFilas][numColums];
+        int posFila = 0; //Indica la posición de la fila
+        int posColumn = 0; //Indica la posición de la columna
+        try {
+            rs.beforeFirst();
+            while(rs.next()){
+                for (posColumn = 0; posColumn < numColums; posColumn++) {
+                    valColumnas[posFila][posColumn] = rs.getObject(posColumn+1);                    
+                }
+                posFila++;
+            }
+        } catch (SQLException ex) {
+            throw new IOSQLException("Error al obtener los datos de la fila " 
+                    + posFila + " en la columna " + posColumn);
+        }
+        return valColumnas;
+    }
+    
     public static void cerrarConexionBD() throws IOSQLException {
         try {
             stmt.close();

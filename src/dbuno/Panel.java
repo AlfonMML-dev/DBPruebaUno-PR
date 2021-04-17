@@ -26,6 +26,8 @@ import javax.swing.JTextField;
 public class Panel extends JPanel {
 
     static private ResultSet rs;
+    private Empleados empleados;
+    private Empleado empleado;
 
     private final GridLayout grid = new GridLayout(1, 2, 10, 0);
     private JButton btActualizar, btBorrar, btDer, btInsertar, btIz;
