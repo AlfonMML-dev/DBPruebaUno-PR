@@ -183,6 +183,9 @@ public class IOSQL {
         } catch (SQLException ex) {
             throw new IOSQLException("Error al obtener los datos de la fila " 
                     + posFila + " en la columna " + posColumn);
+        } catch(ArrayIndexOutOfBoundsException a){
+            throw new IOSQLException("Error al obtener los datos de la fila " 
+                    + posFila + " en la columna " + posColumn);
         }
         return valColumnas;
     }

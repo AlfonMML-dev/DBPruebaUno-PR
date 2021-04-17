@@ -15,14 +15,14 @@ import javax.swing.JFrame;
 public class Ventana extends JFrame{
     Panel panel;
 
-    public Ventana() {
+    public Ventana(Empleados empleados) {
         this.setTitle("Listado empleados");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setBounds(100, 100, 500, 500);
         this.setLayout(new FlowLayout());
-        panel = new Panel();
+        panel = new Panel(empleados);
         this.getContentPane().add(panel);
-        this.addWindowListener(new FuncionalidadVentana());
+//        this.addWindowListener(new FuncionalidadVentana());
         this.setVisible(true);
     }
 

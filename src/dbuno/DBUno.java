@@ -27,6 +27,7 @@ public class DBUno {
         int numFilas = IOSQL.getNumFilas(rs);
         String resultado = IOSQL.printRs(rs);
         empleados = rellenarEmpleados(rs);
+        Ventana ventana = new Ventana(empleados);
         System.out.println(resultado);
         System.out.println(numFilas);
         IOSQL.cerrarConexionBD();

@@ -28,6 +28,7 @@ public class Panel extends JPanel {
     static private ResultSet rs;
     private Empleados empleados;
     private Empleado empleado;
+    private int index = 0;//Para saber el elemento que obtengo de empleados
 
     private final GridLayout grid = new GridLayout(1, 2, 10, 0);
     private JButton btActualizar, btBorrar, btDer, btInsertar, btIz;
@@ -35,7 +36,8 @@ public class Panel extends JPanel {
     private JPanel panelDespla, panelID, panelNombre, panelSueldo;
     private JTextField tfID, tfNombre, tfSueldo;
 
-    public Panel() {
+    public Panel(Empleados empleados) {
+        this.empleados = empleados;
         this.setLayout(new GridLayout(0, 1, 0, 20));
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         ponComponentes();
@@ -128,19 +130,31 @@ public class Panel extends JPanel {
         this.add(btBorrar);
         this.add(btActualizar);
         this.add(btInsertar);
+        
+        if (!empleados.getEmpleados().isEmpty()) {
+            ponEmpleado(empleados.getEmpleados().get(0));
+        }
 
     }
     
-    private void ponEmpleado(){
-        
+    private void ponEmpleado(Empleado emp){
+        tfID.setText(Integer.toString(emp.getId()));
+        tfNombre.setText(emp.getNombre());
+        tfSueldo.setText(Double.toString(emp.getSueldo()));        
     }
 
     public void desplazarIz() {
-        
+        if (index > 0) {
+            index--;
+            ponEmpleado(empleados.getEmpleados().get(index));
+        }
     }
 
     public void desplazarDer() {
-        
+        if (index < empleados.getEmpleados().size()-1) {
+            index++;
+            ponEmpleado(empleados.getEmpleados().get(index));
+        }
     }
 
     public void borrarEmpleado(ActionEvent e)
@@ -158,6 +172,8 @@ public class Panel extends JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
         }
         IOSQL.cerrarConexionBD();
+        empleados.getEmpleados().remove(empleados.getEmpleados().get(index));
+        ponEmpleado(empleados.getEmpleados().get(index));
     }
 
     public void actualizarEmpleado(ActionEvent e)
@@ -177,7 +193,9 @@ public class Panel extends JPanel {
                     + filas + " filas afectadas", "Mensaje Base de Datos", 
                     JOptionPane.INFORMATION_MESSAGE);
         }
-        IOSQL.cerrarConexionBD();
+        IOSQL.cerrarConexionBD();        
+        empleados.getEmpleados().get(index).setNombre(nombre);
+        empleados.getEmpleados().get(index).setSueldo(sueldo);        
     }
 
     public void insertarEmpleado(ActionEvent e)
@@ -190,7 +208,7 @@ public class Panel extends JPanel {
         double sueldo = Double.parseDouble(tfSueldo.getText());        
         IOSQL.abrirConexionBD("pepe", "pepa");        
         String sql = "INSERT INTO empleado VALUES(" + id + "," + "'" + nombre 
-                + "'" + "," + sueldo;
+                + "'" + "," + sueldo + ")";
         int filas = IOSQL.getNumFilasAfectadas(sql);
         if(filas > 0){
             JOptionPane.showMessageDialog(null, "Se ha modificado un empleado " 
@@ -198,6 +216,9 @@ public class Panel extends JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
         }
         IOSQL.cerrarConexionBD();
+        empleado = new Empleado(id, nombre, sueldo);
+        empleados.getEmpleados().add(empleado);
+        ponEmpleado(empleado);       
     }
 
 }
