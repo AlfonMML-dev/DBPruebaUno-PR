@@ -19,9 +19,12 @@ public class Ventana extends JFrame{
         this.setTitle("Listado empleados");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setBounds(100, 100, 500, 500);
-        this.setLayout(new FlowLayout());
-        panel = new Panel(empleados);
-        this.getContentPane().add(panel);
+        this.setLayout(null);
+        panel = new Panel(empleados);        
+        this.setContentPane(panel);
+        //De la siguiente manera no funciona
+//        this.getContentPane().add(panel);
+
 //        this.addWindowListener(new FuncionalidadVentana());
         this.setVisible(true);
     }

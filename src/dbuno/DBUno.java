@@ -44,8 +44,10 @@ public class DBUno {
         double sueldo;        
         for (int i = 0; i < valFilas.length; i++) {
             id = (int) valFilas[i][0];
-            nombreEmp = String.valueOf(valFilas[i][1]);            
-            sueldo = (double) valFilas[i][2];
+            nombreEmp = String.valueOf(valFilas[i][1]); 
+            sueldo = Double.parseDouble(String.valueOf(valFilas[i][2]));
+            //Da error de la siguiente forma
+//            sueldo = (double) valFilas[i][2]; 
             emp = new Empleado(id, nombreEmp, sueldo);
             empleados.insertaEmpleado(emp);
         }

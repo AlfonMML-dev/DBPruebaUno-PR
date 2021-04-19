@@ -96,7 +96,12 @@ public class IOSQL {
     public static int getNumFilas(ResultSet rs) throws IOSQLException {
         int numFilas = 0;
         try {
-            numFilas = rs.getRow();
+            //Da error de la siguiente manera que aparece comentada
+            // numFilas = rs.getRow();
+            rs.beforeFirst();
+            while (rs.next()) {
+                numFilas++;
+            }
         } catch (SQLException e) {
             throw new IOSQLException("Error al obtener el número de filas");
         }

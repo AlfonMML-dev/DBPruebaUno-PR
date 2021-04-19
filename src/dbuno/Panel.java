@@ -6,18 +6,26 @@
 package dbuno;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -30,7 +38,8 @@ public class Panel extends JPanel {
     private Empleado empleado;
     private int index = 0;//Para saber el elemento que obtengo de empleados
 
-    private final GridLayout grid = new GridLayout(1, 2, 10, 0);
+    private JPanel panelPrincipal;
+    private final GridLayout grid = new GridLayout(0, 2, 40, 0);
     private JButton btActualizar, btBorrar, btDer, btInsertar, btIz;
     private JLabel lbID, lbNombre, lbSueldo;
     private JPanel panelDespla, panelID, panelNombre, panelSueldo;
@@ -38,32 +47,38 @@ public class Panel extends JPanel {
 
     public Panel(Empleados empleados) {
         this.empleados = empleados;
-        this.setLayout(new GridLayout(0, 1, 0, 20));
+        this.setLayout(new GridLayout());
         this.setBorder(BorderFactory.createLineBorder(Color.black));
+        panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new GridLayout(0, 1, 10, 10));
+        
+//        panelPrincipal.setBounds(40, 25, 400, 400);
+        panelPrincipal.setBorder(BorderFactory.createLineBorder(Color.black));
+        this.add(panelPrincipal);
         ponComponentes();
     }
 
     public void ponComponentes() {
-        lbID = new JLabel("idEmp:");
-        tfID = new JTextField();
+        lbID = new JLabel("idEmp:", SwingConstants.CENTER);        
+        tfID = new JTextField();        
         panelID = new JPanel(grid);
         panelID.add(lbID);
-        panelID.add(tfID);
-
-        lbNombre = new JLabel("Nombre:");
+        panelID.add(tfID);        
+        
+        lbNombre = new JLabel("Nombre:", SwingConstants.CENTER);
         tfNombre = new JTextField();
         panelNombre = new JPanel(grid);
         panelNombre.add(lbNombre);
         panelNombre.add(tfNombre);
 
-        lbSueldo = new JLabel("Sueldo:");
+        lbSueldo = new JLabel("Sueldo:", SwingConstants.CENTER);
         tfSueldo = new JTextField();
         panelSueldo = new JPanel(grid);
         panelSueldo.add(lbSueldo);
         panelSueldo.add(tfSueldo);
 
         btIz = new JButton("<");
-        btDer = new JButton(">");
+        btDer = new JButton(">");        
         btIz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,13 +138,13 @@ public class Panel extends JPanel {
             }
         });
 
-        this.add(panelID);
-        this.add(panelNombre);
-        this.add(panelSueldo);
-        this.add(panelDespla);
-        this.add(btBorrar);
-        this.add(btActualizar);
-        this.add(btInsertar);
+        panelPrincipal.add(panelID);
+        panelPrincipal.add(panelNombre);
+        panelPrincipal.add(panelSueldo);
+        panelPrincipal.add(panelDespla);
+        panelPrincipal.add(btBorrar);
+        panelPrincipal.add(btActualizar);
+        panelPrincipal.add(btInsertar);
         
         if (!empleados.getEmpleados().isEmpty()) {
             ponEmpleado(empleados.getEmpleados().get(0));
@@ -186,7 +201,8 @@ public class Panel extends JPanel {
         double sueldo = Double.parseDouble(tfSueldo.getText());        
         IOSQL.abrirConexionBD("pepe", "pepa");        
         String sql = "UPDATE empleado SET nombre = " + "'" + nombre + "'" 
-                + "' , sueldo = " + sueldo + "WHERE idEmp = " + id;
+                + ", sueldo = " + "'" + sueldo + "'" + "WHERE idEmp = " 
+                + "'" + id + "'";
         int filas = IOSQL.getNumFilasAfectadas(sql);
         if(filas > 0){
             JOptionPane.showMessageDialog(null, "Se ha modificado un empleado " 
