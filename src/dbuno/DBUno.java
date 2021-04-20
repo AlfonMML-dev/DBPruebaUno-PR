@@ -6,8 +6,6 @@
 package dbuno;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 
 /**
  *

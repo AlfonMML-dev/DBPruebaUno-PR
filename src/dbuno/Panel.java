@@ -37,7 +37,8 @@ public class Panel extends JPanel {
     private Empleados empleados;
     private Empleado empleado;
     private int index = 0;//Para saber el elemento que obtengo de empleados
-
+    private TratamientoDatos tDatos;
+    
     private JPanel panelPrincipal;
     private final GridLayout grid = new GridLayout(0, 2, 40, 0);
     private JButton btActualizar, btBorrar, btDer, btInsertar, btIz;
@@ -69,7 +70,7 @@ public class Panel extends JPanel {
         tfNombre = new JTextField();
         panelNombre = new JPanel(grid);
         panelNombre.add(lbNombre);
-        panelNombre.add(tfNombre);
+        panelNombre.add(tfNombre);        
 
         lbSueldo = new JLabel("Sueldo:", SwingConstants.CENTER);
         tfSueldo = new JTextField();
@@ -195,6 +196,9 @@ public class Panel extends JPanel {
             throws IOSQLException, IOClassNotFoundException {        
         //Obtengo el ID del empleado que voy a modificar
         int id = Integer.parseInt(tfID.getText());
+        //Compruebo si los datos que voy a actualizar son válidos
+        tDatos = new TratamientoDatos(this);
+        tDatos.tratarDatosEmpleado();
         //Obtengo el nuevo nombre que le voy a asignar al empleado
         String nombre = tfNombre.getText();
         //Obtengo el nuevo sueldo que le voy a asignar al empleado
@@ -218,6 +222,9 @@ public class Panel extends JPanel {
             throws IOSQLException, IOClassNotFoundException {
         //Obtengo el ID del empleado que voy a insertar
         int id = Integer.parseInt(tfID.getText());
+        //Compruebo si los datos que voy a actualizar son válidos
+        tDatos = new TratamientoDatos(this);
+        tDatos.tratarDatosEmpleado();
         //Obtengo el nuevo nombre que le voy a asignar al empleado
         String nombre = tfNombre.getText();
         //Obtengo el nuevo sueldo que le voy a asignar al empleado
@@ -236,5 +243,31 @@ public class Panel extends JPanel {
         empleados.getEmpleados().add(empleado);
         ponEmpleado(empleado);       
     }
+
+    public JTextField getTfID() {
+        return tfID;
+    }
+
+    public void setTfID(JTextField tfID) {
+        this.tfID = tfID;
+    }
+
+    public JTextField getTfNombre() {
+        return tfNombre;
+    }
+
+    public void setTfNombre(JTextField tfNombre) {
+        this.tfNombre = tfNombre;
+    }
+
+    public JTextField getTfSueldo() {
+        return tfSueldo;
+    }
+
+    public void setTfSueldo(JTextField tfSueldo) {
+        this.tfSueldo = tfSueldo;
+    }
+    
+    
 
 }
