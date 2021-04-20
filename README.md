@@ -1,2 +1,2 @@
-# AsignaturaProgramacionFP
-Lugar donde almaceno proyectos realizados en la asignatura de programación del FP Superior
+# DBPruebUno-PR
+Accedo a una base de datos llamada pruebauno
